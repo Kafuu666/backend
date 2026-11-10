@@ -12,11 +12,16 @@ async function start() {
     process.exit(1);
   }
 
-  // 0.0.0.0 wajib digunakan untuk cloud deployment (Render, dll)
-  const PORT = env.port || 5000;
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 HabitTrack API berjalan pada port ${PORT}`);
-  });
+  // Hanya jalankan app.listen saat berjalan di lokal komputer Anda, BUKAN di Vercel
+  if (process.env.NODE_ENV !== 'production') {
+    const PORT = env.port || 5000;
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 HabitTrack API berjalan pada port ${PORT}`);
+    });
+  }
 }
 
 start();
+
+// WAJIB ditambahkan agar Vercel bisa memproses routing Express
+module.exports = app;
